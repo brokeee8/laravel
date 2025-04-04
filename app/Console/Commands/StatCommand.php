@@ -32,8 +32,8 @@ class StatCommand extends Command
     {
         $article_count = Show::count();
         Show::whereNotNull('id')->delete();
-        $comment_count = Comment::whereDate('created_at', Carbon::today)->count();
-        // Mail::to('vladpadik@mail.ru')->send(new StatMail($article_count, $comment_count));
+        $comment_count = Comment::whereDate('created_at', Carbon::today())->count();
+        Mail::to('vladpadik@mail.ru')->send(new StatMail($article_count, $comment_count));
         
     }
 }

@@ -42,7 +42,7 @@ class StatMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'stat.shipped',
+            markdown: 'mail.stat',
             with:[
                 'article_count'=>$this->article_count,
                 'comment_count'=>$this->comment_count,

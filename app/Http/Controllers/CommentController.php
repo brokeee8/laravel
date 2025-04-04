@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CommentMail;
 use App\Models\Article;
+use Carbon\Carbon;
+use App\Jobs\Stat;
 
 
 class CommentController extends Controller
@@ -25,6 +27,7 @@ class CommentController extends Controller
         $comment->user_id = auth()->user()->id;
         $comment->article_id = $request->article_id;
         if($comment->save()) Mail::to('vladpadik@mail.ru')->send(new CommentMail($comment, $article));
+        Stat::dispatch(3,4);
         return redirect()->route('article.show', ['article'=>$request->article_id])->with('status','Add comment successfully');
     }
 
@@ -33,6 +36,8 @@ class CommentController extends Controller
         Gate::authorize('comment', $comment);
    
         $comment->delete();
+
+     
         return redirect()->route('article.show', ['article'=>$comment->article_id])->with('save','Delete comment successfully');
 
     }
@@ -42,6 +47,7 @@ class CommentController extends Controller
     {
         Gate::authorize('comment', $comment);
         return view('comment.edit', ['comment' => $comment]);
+        
 // сделать страничку редактирования комментария
     }
 
